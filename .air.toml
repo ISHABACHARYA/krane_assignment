@@ -1,0 +1,3 @@
+root = "." # The root directory of your Go project
+tmp_dir = "tmp" # Temporary directory for storing binary files
+build_cmd = "go build -o ./tmp/main ." # Build command for your project

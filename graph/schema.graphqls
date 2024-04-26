@@ -1,0 +1,97 @@
+scalar Time
+
+type User {
+  id: ID!
+  username: String!
+  email: String!
+  phoneNumber: String
+  createdAt: Time!
+  updatedAt: Time!
+}
+
+type Event {
+  id: ID!
+  name: String!
+  startDate: Time!
+  endDate: Time!
+  createdAt: Time!
+  updatedAt: Time!
+}
+type Session {
+  startDate: Time!
+  endDate: Time!
+  status: String
+  visibility: Boolean
+  event: ID!
+}
+type UserEvent {
+  id: ID!
+  userId: String
+  eventId: String
+  role: UserRole!
+}
+enum UserRole {
+  ADMIN
+  MANAGER
+  ATTENDEE
+}
+
+type Expense {
+  id: ID!
+  eventId: ID!
+  type: ExpenseType!
+  amount: Int!
+  name: String!
+  description: String
+}
+
+enum ExpenseType {
+  VENUE
+  CATERING
+  DECORATIONS
+  MISC
+  PETTY
+}
+input UserInput {
+  username: String!
+  email: String!
+  phoneNumber: String
+}
+input EventInput {
+  name: String!
+  startDate: Time!
+  endDate: Time!
+}
+input UserEventInput {
+  userID: ID!
+  eventID: ID!
+  role: UserRole!
+}
+
+input ExpenseInput {
+  eventId: ID!
+  type: ExpenseType!
+  amount: Int!
+  name: String!
+  description: String
+}
+
+type Query {
+  user(id: ID!): User!
+  event(id: ID!): Event!
+  expense(eventId: ID!, userId: ID!, expensetype: ExpenseType!): [Expense]!
+}
+
+type Mutation {
+  createUser(user: UserInput): User!
+  updateUser(id: ID, user: UserInput): User!
+
+  createEvent(userId: ID!, event: EventInput): Event!
+  updateEvent(id: ID, userId: String): Event!
+  deleteEvent(id: ID, userId: String): Boolean!
+
+  addUserToEvent(managerId: ID!, userEvent: UserEventInput!): UserEvent!
+  updateUserEvent(managerId: ID!, userEvent: UserEventInput!): UserEvent!
+
+  createExpense(adminId: ID!, expense: ExpenseInput!): Expense!
+}
